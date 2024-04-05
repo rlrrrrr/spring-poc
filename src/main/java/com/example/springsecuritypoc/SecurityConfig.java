@@ -22,17 +22,21 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-
     @Autowired
     UserRepository userRepository;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((authorize) -> authorize
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/home").permitAll()
+                        .requestMatchers("/signin").permitAll()
+                        .requestMatchers("/login").permitAll()
                         .anyRequest().authenticated()
-                ).csrf(AbstractHttpConfigurer::disable)
-                .httpBasic(Customizer.withDefaults());
+                )
+                .httpBasic(Customizer.withDefaults())
+                .formLogin(Customizer.withDefaults())
+                .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
 
@@ -47,9 +51,6 @@ public class SecurityConfig {
 
         return new ProviderManager(authenticationProvider);
     }
-
-
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {

@@ -21,16 +21,10 @@ public class MyUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Ici, vous pouvez récupérer le nom d'utilisateur et d'autres informations nécessaires
-        // Par exemple, si vous avez besoin d'un token personnalisé, vous pouvez le concaténer avec le nom d'utilisateur
-        // et le séparer ici pour récupérer les informations nécessaires
-        // Pour cet exemple, nous supposons que vous avez besoin uniquement du nom d'utilisateur
         UserDetails userEntity = userRepository.findByLastName(username).get(0);
         if (userEntity == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        
-        // Construire les détails de l'utilisateur
 
         return User.withUsername(userEntity.getUsername())
                 .password(userEntity.getPassword())
