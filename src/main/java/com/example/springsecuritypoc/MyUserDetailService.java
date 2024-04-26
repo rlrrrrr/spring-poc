@@ -27,7 +27,7 @@ public class MyUserDetailService implements UserDetailsService {
         }
 
         return User.withUsername(userEntity.getUsername())
-                .password(userEntity.getPassword())
+                .password("{noop}"+userEntity.getPassword())
                 .disabled(false)
                 .authorities(userEntity.getAuthorities()).build();
     }
